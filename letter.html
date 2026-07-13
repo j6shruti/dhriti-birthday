@@ -36,6 +36,9 @@
         return;
       }
       renderClue();
+    })
+    .catch(err => {
+      document.getElementById("card").innerHTML = "<p>Something went wrong loading this letter. Error: " + err.message + "</p>";
     });
 
   function renderClue() {
