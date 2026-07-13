@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dhriti 🎂</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="screen">
+  <h1>Happy Birthday, Dhriti! 🎂💛</h1>
+  <p>Some people love you more than words can say... so they wrote it in letters instead. Open each envelope to find out who.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+  </div>
+  <p id="progressText" style="margin-top:-10px; font-size:0.9rem;"></p>
+
+  <div class="envelope-grid" id="envelopeGrid"></div>
+
+  <div id="finalBtnWrap" style="display:none; margin-top:30px;">
+    <button onclick="window.location.href='final.html'">Open Your Final Surprise 🎁</button>
+  </div>
+</div>
+
+<script>
+  // ---- Security check: must have entered code first ----
+  if (sessionStorage.getItem("unlocked") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  // Floating sparkles
+  const sparkles = ["🎈","✨","🎂","💫","🎊","💛"];
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (4 + Math.random() * 4) + "s";
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+
+  // Load clues.json and build envelopes
+  fetch("clues.json")
+    .then(res => res.json())
+    .then(clues => {
+      const grid = document.getElementById("envelopeGrid");
+      const completed = JSON.parse(localStorage.getItem("completedLetters") || "[]");
+
+      clues.forEach(clue => {
+        const div = document.createElement("div");
+        const isDone = completed.includes(clue.id);
+        div.className = "envelope" + (isDone ? " opened" : "");
+        div.innerHTML = `<span class="icon">${isDone ? "💌" : "✉️"}</span> Letter ${clue.id}`;
+        div.onclick = () => {
+          window.location.href = `letter.html?id=${clue.id}`;
+        };
+        grid.appendChild(div);
+      });
+
+      updateProgress(clues.length, completed.length);
+    });
+
+  function updateProgress(total, done) {
+    const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+    document.getElementById("progressBar").style.width = pct + "%";
+    document.getElementById("progressText").textContent = `${done} of ${total} letters opened`;
+
+    if (done >= total && total > 0) {
+      document.getElementById("finalBtnWrap").style.display = "block";
+    }
+  }
+</script>
+
+</body>
+</html>
