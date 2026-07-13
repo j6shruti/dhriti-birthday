@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Letter For You 💌</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="screen">
+  <div class="card" id="card">
+    <p>Loading your letter...</p>
+  </div>
+</div>
+
+<script>
+  // ---- Security check ----
+  if (sessionStorage.getItem("unlocked") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  // Get the letter id from the URL, e.g. letter.html?id=3
+  const params = new URLSearchParams(window.location.search);
+  const letterId = parseInt(params.get("id"));
+
+  let wrongAttempts = 0;
+  let currentClue = null;
+
+  fetch("clues.json")
+    .then(res => res.json())
+    .then(clues => {
+      currentClue = clues.find(c => c.id === letterId);
+      if (!currentClue) {
+        document.getElementById("card").innerHTML = "<p>Letter not found.</p>";
+        return;
+      }
+      renderClue();
+    });
+
+  function renderClue() {
+    const completed = JSON.parse(localStorage.getItem("completedLetters") || "[]");
+    const alreadyDone = completed.includes(currentClue.id);
+
+    document.getElementById("card").innerHTML = `
+      <h1>Letter ${currentClue.id} ✉️</h1>
+      <p class="clue-text">"${currentClue.clue}"</p>
+
+      ${alreadyDone ? `
+        <p>You already unlocked this one 💛</p>
+        <button onclick="showVideo()">Watch Video Again 🎬</button>
+      ` : `
+        <input type="text" id="guessInput" placeholder="Who is it?">
+        <br>
+        <button onclick="checkGuess()">Guess</button>
+        <div class="error" id="guessError"></div>
+        <div id="hintBox"></div>
+      `}
+
+      <div id="videoBox"></div>
+      <span class="back-link" onclick="window.location.href='homepage.html'">← Back to all letters</span>
+    `;
+
+    if (alreadyDone) {
+      document.getElementById("guessInput")?.remove();
+    }
+
+    document.getElementById("guessInput")?.addEventListener("keyup", function(e) {
+      if (e.key === "Enter") checkGuess();
+    });
+  }
+
+  function checkGuess() {
+    const input = document.getElementById("guessInput").value.trim().toLowerCase();
+    const correct = currentClue.answer.trim().toLowerCase();
+    const errorBox = document.getElementById("guessError");
+
+    if (input === "") return;
+
+    if (input === correct) {
+      errorBox.textContent = "";
+      markCompleted(currentClue.id);
+      showVideo();
+    } else {
+      wrongAttempts++;
+      if (wrongAttempts >= 2) {
+        document.getElementById("hintBox").innerHTML = `
+          <div class="hint">💡 Hint: ${currentClue.hint}</div>
+        `;
+      }
+      errorBox.textContent = "Not quite... try again 🤔";
+    }
+  }
+
+  function markCompleted(id) {
+    let completed = JSON.parse(localStorage.getItem("completedLetters") || "[]");
+    if (!completed.includes(id)) {
+      completed.push(id);
+      localStorage.setItem("completedLetters", JSON.stringify(completed));
+    }
+  }
+
+  function showVideo() {
+    document.getElementById("guessInput")?.remove();
+    document.querySelector("button")?.remove();
+    document.getElementById("hintBox").innerHTML = "";
+    document.getElementById("guessError").textContent = "";
+    document.getElementById("videoBox").innerHTML = `
+      <p style="margin-top:15px;">You got it! 🎉 Here's your video:</p>
+      <iframe src="${currentClue.video}" allow="autoplay" allowfullscreen></iframe>
+    `;
+  }
+</script>
+
+</body>
+</html>
