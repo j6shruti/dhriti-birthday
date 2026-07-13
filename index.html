@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dhriti's Birthday</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Secret For You 💌</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Testing... 🎂</h1>
-  <p>If you can see this, GitHub Pages is working!</p>
+
+<div class="screen">
+  <h1>Hey Dhriti 🎉</h1>
+  <p>Something special is waiting for you... but first, you need the secret code.</p>
+
+  <input type="password" id="codeInput" placeholder="Enter secret code" inputmode="numeric">
+  <br>
+  <button onclick="checkCode()">Unlock 🔓</button>
+  <div class="error" id="errorMsg"></div>
+</div>
+
+<script>
+  // Create floating sparkles in the background
+  const sparkles = ["🎈","✨","🎂","💫","🎊"];
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (4 + Math.random() * 4) + "s";
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+
+  const SECRET_CODE = "15072000";
+
+  function checkCode() {
+    const input = document.getElementById("codeInput").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+
+    if (input === SECRET_CODE) {
+      sessionStorage.setItem("unlocked", "true");
+      window.location.href = "homepage.html";
+    } else {
+      errorMsg.textContent = "That's not quite right... try again 💭";
+    }
+  }
+
+  // Allow pressing Enter to submit
+  document.getElementById("codeInput").addEventListener("keyup", function(e) {
+    if (e.key === "Enter") checkCode();
+  });
+</script>
+
 </body>
 </html>
