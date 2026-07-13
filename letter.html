@@ -101,10 +101,13 @@
   }
 
   function showVideo() {
+    function showVideo() {
     document.getElementById("guessInput")?.remove();
     document.querySelector("button")?.remove();
-    document.getElementById("hintBox").innerHTML = "";
-    document.getElementById("guessError").textContent = "";
+    const hintBox = document.getElementById("hintBox");
+    if (hintBox) hintBox.innerHTML = "";
+    const guessError = document.getElementById("guessError");
+    if (guessError) guessError.textContent = "";
     document.getElementById("videoBox").innerHTML = `
       <p style="margin-top:15px;">You got it! 🎉 Here's your video:</p>
       <iframe src="${currentClue.video}" allow="autoplay" allowfullscreen></iframe>
