@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAPPY 26th BIRTHDAY DHRITIII 🎉</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="screen">
+  <div class="card">
+    <h1>You Found Them All 🥹💛</h1>
+    <p>Every letter, every person, every little piece of love, all for you, Dhriti!!! Happy Birthday. We hope this year gives you everything you deserve and more.</p>
+
+    <!-- Replace PUT_FINAL_FILE_ID_HERE with your final video's Google Drive file ID -->
+    <iframe src="https://youtube.com/shorts/GqV3KEk8Zes?si=ryVBgA7rAQIqSX2C" allow="autoplay" allowfullscreen></iframe>
+
+    <p style="margin-top:10px;">With all our love 🎂✨</p>
+
+    <span class="back-link" onclick="window.location.href='homepage.html'">← Back to homepage</span>
+  </div>
+</div>
+
+<script>
+  if (sessionStorage.getItem("unlocked") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  // Confetti-style sparkles, denser for the finale
+  const sparkles = ["🎈","✨","🎂","💫","🎊","💛","🎁"];
+  for (let i = 0; i < 35; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (3 + Math.random() * 4) + "s";
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
