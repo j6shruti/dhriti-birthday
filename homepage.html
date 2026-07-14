@@ -43,7 +43,7 @@
   }
 
   // Load clues.json and build envelopes
-  fetch("clues.json")
+  fetch("clues.json?v=" + Date.now())
     .then(res => res.json())
     .then(clues => {
       const grid = document.getElementById("envelopeGrid");
