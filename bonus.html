@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus Round 🎁</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="screen">
+  <div class="card">
+    <h1>Bonus Round 🎁</h1>
+    <p>A little extra love, chaos, and behind-the-scenes proof — pick what you want to see 💛</p>
+
+    <button onclick="window.location.href='album.html?type=bonus'" style="margin-top:10px;">Bonus Moments 📸</button>
+    <br>
+    <button onclick="window.location.href='album.html?type=bts'" style="margin-top:15px;">Behind The Scenes 🎬</button>
+    <br>
+    <button onclick="window.location.href='creators.html'" style="margin-top:15px;">Messages From Your Fav Creators 🎥</button>
+
+    <br>
+    <span class="back-link" onclick="window.location.href='final.html'">← Back to your surprise</span>
+  </div>
+</div>
+
+<script>
+  if (sessionStorage.getItem("unlocked") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  const sparkles = ["📸","✨","🎈","💫","😂"];
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (4 + Math.random() * 4) + "s";
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
