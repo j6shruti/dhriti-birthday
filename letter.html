@@ -58,6 +58,10 @@
         <button onclick="checkGuess()">Guess</button>
         <div class="error" id="guessError"></div>
         <div id="hintBox"></div>
+        <div class="reveal-troll-wrap" id="revealTrollWrap">
+          <button type="button" class="reveal-troll" id="revealTroll">Reveal answer 👀</button>
+        </div>
+        <div class="troll-taunt" id="trollTaunt"></div>
       `}
 
       <div id="videoBox"></div>
@@ -71,6 +75,43 @@
     document.getElementById("guessInput")?.addEventListener("keyup", function(e) {
       if (e.key === "Enter") checkGuess();
     });
+
+    if (!alreadyDone) setupRevealTroll();
+  }
+
+  // ---- Runaway "Reveal answer" button: dodges forever, never reveals ----
+  function setupRevealTroll() {
+    const btn = document.getElementById("revealTroll");
+    const taunt = document.getElementById("trollTaunt");
+    if (!btn) return;
+
+    const taunts = [
+      "nope 😌", "too slow", "not today", "keep trying 🤭",
+      "you really thought? 💀", "catch me first", "lol no",
+      "figure it out yourself 💛", "nice try", "almost… not"
+    ];
+    let dodges = 0;
+
+    function dodge() {
+      dodges++;
+      taunt.textContent = taunts[Math.min(dodges - 1, taunts.length - 1)];
+      // Jump to a random spot within the viewport, keeping the button on-screen.
+      const w = btn.offsetWidth || 150;
+      const h = btn.offsetHeight || 44;
+      const maxX = Math.max(0, window.innerWidth - w - 16);
+      const maxY = Math.max(0, window.innerHeight - h - 16);
+      btn.style.position = "fixed";
+      btn.style.left = (8 + Math.random() * maxX) + "px";
+      btn.style.top = (8 + Math.random() * maxY) + "px";
+      btn.style.transform = "rotate(" + (Math.random() * 30 - 15) + "deg)";
+    }
+
+    // Dodge before the pointer can land on it.
+    btn.addEventListener("mouseenter", dodge);
+    btn.addEventListener("pointerdown", (e) => { e.preventDefault(); dodge(); });
+    btn.addEventListener("touchstart", (e) => { e.preventDefault(); dodge(); }, { passive: false });
+    // Even a lucky click never reveals anything.
+    btn.addEventListener("click", (e) => { e.preventDefault(); dodge(); });
   }
 
   function checkGuess() {
@@ -105,6 +146,9 @@
 
   function showVideo() {
     document.getElementById("guessInput")?.remove();
+    document.getElementById("revealTrollWrap")?.remove();
+    document.getElementById("revealTroll")?.remove();
+    document.getElementById("trollTaunt")?.remove();
     document.querySelector("button")?.remove();
     const hintBox = document.getElementById("hintBox");
     if (hintBox) hintBox.innerHTML = "";

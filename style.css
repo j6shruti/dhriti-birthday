@@ -215,6 +215,174 @@ video, iframe {
   transition: width 0.5s ease;
 }
 
+/* ---------- Tap-to-enter overlay (lockscreen) ---------- */
+.enter-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2b1055, #7597de);
+  transition: opacity 0.55s ease;
+}
+.enter-overlay.gone { opacity: 0; pointer-events: none; }
+.enter-inner { animation: floaty 3s ease-in-out infinite; }
+.enter-emoji {
+  font-size: 4.5rem;
+  margin-bottom: 10px;
+  animation: glow 2.5s ease-in-out infinite alternate;
+}
+.enter-hint {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* ---------- Music toggle (lockscreen) ---------- */
+.music-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  font-size: 1.3rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  animation: pulse-music 2s ease-in-out infinite;
+}
+.music-toggle:hover { transform: translateY(-2px) scale(1.08); }
+.music-toggle.muted { animation: none; opacity: 0.75; }
+@keyframes pulse-music {
+  0%, 100% { box-shadow: 0 4px 15px rgba(255,215,0,0.25); }
+  50% { box-shadow: 0 4px 22px rgba(255,215,0,0.6); }
+}
+
+/* ---------- Runaway "Reveal answer" troll button ---------- */
+.reveal-troll-wrap {
+  margin-top: 18px;
+  min-height: 46px;
+}
+.reveal-troll {
+  background: linear-gradient(135deg, #ff6b9d, #c86bff);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(200,107,255,0.4);
+  transition: left 0.12s ease, top 0.12s ease, transform 0.12s ease;
+  z-index: 90;
+}
+.troll-taunt {
+  margin-top: 10px;
+  min-height: 22px;
+  font-weight: bold;
+  color: #ffb3d1;
+  font-style: italic;
+}
+
+/* ---------- Birthday cake (finale) ---------- */
+.cake-prompt { font-weight: bold; margin-bottom: 18px; }
+.cake {
+  position: relative;
+  width: 170px;
+  height: 130px;
+  margin: 0 auto 22px;
+  cursor: pointer;
+}
+.cake .candles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  z-index: 2;
+}
+.candle {
+  position: relative;
+  width: 8px;
+  height: 34px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(45deg, #ff8fab 0 5px, #fff 5px 10px);
+}
+.flame {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 12px;
+  height: 18px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 70%, #fffde7, #ffcc33 45%, #ff6b00 80%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 0 14px 4px rgba(255,170,0,0.7);
+  transform-origin: bottom center;
+  animation: flicker 0.25s ease-in-out infinite alternate;
+}
+@keyframes flicker {
+  from { transform: translateX(-50%) scale(1) rotate(-3deg); opacity: 0.9; }
+  to   { transform: translateX(-50%) scale(1.12) rotate(3deg); opacity: 1; }
+}
+.flame.out {
+  animation: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-14px) scale(0.3);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.cake-top {
+  position: absolute;
+  bottom: 42px;
+  left: 5px;
+  right: 5px;
+  height: 46px;
+  border-radius: 12px 12px 6px 6px;
+  background: linear-gradient(135deg, #fff0f5, #ffd9e6);
+  box-shadow: inset 0 -6px 0 rgba(0,0,0,0.05);
+}
+.cake-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  border-radius: 8px 8px 12px 12px;
+  background: linear-gradient(135deg, #a3623b, #c8825a);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+#blowBtn { margin-bottom: 10px; }
+
+/* ---------- Confetti + balloons (finale burst) ---------- */
+.confetti-piece {
+  position: fixed;
+  top: -12px;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  z-index: 50;
+  pointer-events: none;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  to { transform: translateY(105vh) rotate(720deg); opacity: 0.9; }
+}
+.balloon {
+  position: fixed;
+  bottom: -60px;
+  font-size: 2rem;
+  z-index: 50;
+  pointer-events: none;
+  animation: balloon-rise ease-in forwards;
+}
+@keyframes balloon-rise {
+  to { transform: translateY(-115vh) rotate(8deg); opacity: 0.85; }
+}
+
 /* Mobile tweaks */
 @media (max-width: 480px) {
   h1 { font-size: 1.6rem; }

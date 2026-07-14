@@ -8,6 +8,17 @@
 </head>
 <body>
 
+<div class="enter-overlay" id="enterOverlay">
+  <div class="enter-inner">
+    <div class="enter-emoji">🎂</div>
+    <h1>Happy Birthday Dhriti 🎉</h1>
+    <p>Tap to open your surprise 💛</p>
+    <span class="enter-hint">🎵 (turn your sound on!)</span>
+  </div>
+</div>
+
+<button class="music-toggle" id="musicToggle" title="Birthday music">🎵</button>
+
 <div class="screen">
   <h1>Hey Dhriti 🎉</h1>
   <p>Something special is waiting for you... but first, you need the secret code.</p>
@@ -30,6 +41,105 @@
     s.style.animationDelay = Math.random() * 5 + "s";
     document.body.appendChild(s);
   }
+
+  // ---- Happy Birthday song (synthesized, zero-dependency) ----
+  const musicBtn = document.getElementById("musicToggle");
+  let audioCtx = null;
+  let songTimers = [];
+  // Melody: [note, beats]. Frequencies in Hz, null = rest.
+  const N = { C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00,
+              A4:440.00, Bb4:466.16, C5:523.25, D5:587.33, E5:659.25, F5:698.46 };
+  const MELODY = [
+    [N.C4,0.75],[N.C4,0.25],[N.D4,1],[N.C4,1],[N.F4,1],[N.E4,2],
+    [N.C4,0.75],[N.C4,0.25],[N.D4,1],[N.C4,1],[N.G4,1],[N.F4,2],
+    [N.C4,0.75],[N.C4,0.25],[N.C5,1],[N.A4,1],[N.F4,1],[N.E4,1],[N.D4,2],
+    [N.Bb4,0.75],[N.Bb4,0.25],[N.A4,1],[N.F4,1],[N.G4,1],[N.F4,2]
+  ];
+  const BEAT = 0.42; // seconds per beat
+
+  function playNote(freq, start, dur) {
+    if (freq == null) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.value = freq;
+    const t = audioCtx.currentTime + start;
+    const peak = 0.16;
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(peak, t + 0.03);          // soft attack
+    gain.gain.setValueAtTime(peak, t + dur - 0.06);
+    gain.gain.linearRampToValueAtTime(0, t + dur);              // gentle release
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + dur + 0.02);
+  }
+
+  function scheduleSong() {
+    let cursor = 0;
+    let total = 0;
+    MELODY.forEach(([freq, beats]) => {
+      const dur = beats * BEAT;
+      playNote(freq, cursor, Math.max(0.08, dur - 0.05));
+      cursor += dur;
+      total += dur;
+    });
+    // loop after a short pause
+    const loopId = setTimeout(() => { if (musicOn) scheduleSong(); }, (total + 1.2) * 1000);
+    songTimers.push(loopId);
+  }
+
+  function stopSong() {
+    songTimers.forEach(clearTimeout);
+    songTimers = [];
+  }
+
+  let musicOn = localStorage.getItem("musicOn") !== "false"; // default on
+  updateMusicIcon();
+
+  function updateMusicIcon() {
+    musicBtn.textContent = musicOn ? "🔊" : "🔇";
+    musicBtn.classList.toggle("muted", !musicOn);
+  }
+
+  function startAudioIfNeeded() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    if (musicOn && songTimers.length === 0) scheduleSong();
+  }
+
+  // Browsers block autoplay until a gesture — start on first interaction.
+  function firstGesture() {
+    startAudioIfNeeded();
+    window.removeEventListener("pointerdown", firstGesture);
+    window.removeEventListener("keydown", firstGesture);
+  }
+  window.addEventListener("pointerdown", firstGesture);
+  window.addEventListener("keydown", firstGesture);
+
+  // Tap-to-enter: start the song the instant she opens the surprise.
+  const enterOverlay = document.getElementById("enterOverlay");
+  function enter() {
+    startAudioIfNeeded();
+    enterOverlay.classList.add("gone");
+    setTimeout(() => enterOverlay.remove(), 600);
+    document.getElementById("codeInput").focus();
+  }
+  enterOverlay.addEventListener("click", enter);
+
+  musicBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    musicOn = !musicOn;
+    localStorage.setItem("musicOn", musicOn ? "true" : "false");
+    updateMusicIcon();
+    if (musicOn) {
+      startAudioIfNeeded();
+    } else {
+      stopSong();
+      if (audioCtx) audioCtx.suspend();
+    }
+  });
 
   const SECRET_CODE = "15072000";
 
