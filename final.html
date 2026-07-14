@@ -13,8 +13,24 @@
     <h1>You Found Them All 🥹💛</h1>
     <p>Every letter, every person, every little piece of love, all for you, Dhriti!!! Happy Birthday. We hope this year gives you everything you deserve and more.</p>
 
+    <div id="cakeStage">
+      <p class="cake-prompt">Make a wish and blow out the candles 🎂</p>
+      <div class="cake" id="cake" title="Blow them out!">
+        <div class="candles">
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+          <div class="candle"><div class="flame"></div></div>
+        </div>
+        <div class="cake-top"></div>
+        <div class="cake-body"></div>
+      </div>
+      <button id="blowBtn">Blow 💨</button>
+    </div>
+
     <!-- Replace PUT_FINAL_FILE_ID_HERE with your final video's Google Drive file ID -->
-<iframe class="vertical-video" src="https://www.youtube.com/embed/GqV3KEk8Zes" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe class="vertical-video" id="finalVideo" src="https://www.youtube.com/embed/GqV3KEk8Zes" allow="autoplay; encrypted-media" allowfullscreen hidden></iframe>
 
     <p style="margin-top:10px;">With all our love 🎂✨</p>
 
@@ -37,6 +53,55 @@
     s.style.animationDuration = (3 + Math.random() * 4) + "s";
     s.style.animationDelay = Math.random() * 5 + "s";
     document.body.appendChild(s);
+  }
+
+  // ---- Blow out the candles, then reveal the video ----
+  const cake = document.getElementById("cake");
+  const blowBtn = document.getElementById("blowBtn");
+  const cakeStage = document.getElementById("cakeStage");
+  const finalVideo = document.getElementById("finalVideo");
+  let blownOut = false;
+
+  function blowOut() {
+    if (blownOut) return;
+    blownOut = true;
+    document.querySelectorAll(".flame").forEach(f => f.classList.add("out"));
+    celebrate();
+    setTimeout(() => {
+      cakeStage.style.display = "none";
+      finalVideo.hidden = false;
+    }, 1100);
+  }
+
+  cake.addEventListener("click", blowOut);
+  blowBtn.addEventListener("click", blowOut);
+
+  function celebrate() {
+    const colors = ["#ffcc33","#ff6b6b","#4dd0e1","#ba68c8","#ff9966","#fff176","#81c784"];
+    // Confetti
+    for (let i = 0; i < 45; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti-piece";
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (2.5 + Math.random() * 2.5) + "s";
+      c.style.animationDelay = Math.random() * 0.6 + "s";
+      c.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5500);
+    }
+    // Balloons rising
+    const balloonEmojis = ["🎈","🎈","🎉","🥳"];
+    for (let i = 0; i < 10; i++) {
+      const b = document.createElement("div");
+      b.className = "balloon";
+      b.textContent = balloonEmojis[Math.floor(Math.random() * balloonEmojis.length)];
+      b.style.left = Math.random() * 100 + "vw";
+      b.style.animationDuration = (5 + Math.random() * 3) + "s";
+      b.style.animationDelay = Math.random() * 0.8 + "s";
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), 9000);
+    }
   }
 </script>
 
