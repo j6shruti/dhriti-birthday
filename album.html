@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Album 📸</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    max-width: 900px;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .gallery img {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .gallery iframe {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 16/9;
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+  <div id="card" style="max-width:900px; width:100%;">
+    <p>Loading...</p>
+  </div>
+</div>
+
+<script>
+  if (sessionStorage.getItem("unlocked") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  const sparkles = ["📸","✨","🎈","💫","😂"];
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (4 + Math.random() * 4) + "s";
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+
+  // ---- Add your file IDs here ----
+  const albums = {
+    bonus: {
+      title: "Bonus Moments 📸",
+      text: "A few extra memories, just for you.",
+      items: [
+        { type: "photo", id: "PUT_PHOTO_FILE_ID_HERE" },
+        { type: "video", id: "PUT_VIDEO_FILE_ID_HERE" }
+      ]
+    },
+    bts: {
+      title: "Behind The Scenes 🎬",
+      text: "This is what it actually took to make this website. Chaos, mostly.",
+      items: [
+        { type: "photo", id: "PUT_PHOTO_FILE_ID_HERE" },
+        { type: "photo", id: "PUT_PHOTO_FILE_ID_HERE" }
+      ]
+    }
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get("type");
+  const data = albums[type];
+
+  if (data) {
+    let itemsHTML = "";
+    data.items.forEach(item => {
+      if (item.type === "photo") {
+        itemsHTML += `<img src="https://drive.google.com/thumbnail?id=${item.id}&sz=w1000" loading="lazy">`;
+      } else if (item.type === "video") {
+        itemsHTML += `<iframe src="https://drive.google.com/file/d/${item.id}/preview" allow="autoplay" allowfullscreen></iframe>`;
+      }
+    });
+
+    document.getElementById("card").innerHTML = `
+      <h1>${data.title}</h1>
+      <p>${data.text}</p>
+      <div class="gallery">${itemsHTML}</div>
+      <br>
+      <span class="back-link" onclick="window.location.href='bonus.html'">← Back to bonus round</span>
+    `;
+  } else {
+    document.getElementById("card").innerHTML = "<p>Album not found.</p>";
+  }
+</script>
+
+</body>
+</html>
