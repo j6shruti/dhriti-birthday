@@ -34,12 +34,39 @@
     "hint": "No hints for thissss!",
     "video": "https://drive.google.com/file/d/1khKBepA2r11Isx3lSQln5P0qftygjASh/preview"
   },
-  {
+{
     "id": 6,
-    "clue": "I MANAGED A VOICE NOTE FROM YOUR CHILDHOOD CRUSH",
+    "clue": "Job title: World's Best Neighbour. Side quest: Borrowing my things. Main quest: Trek Partner. Who am I describing?".
+    "answer": "riana",
+    "hint": "riana",
+    "video": "https://drive.google.com/file/d/141Rkoo6MJZS7fApOX0X6-Uy26Mt7NQMp/preview"
+  },
+  {
+    "id": 7,
+    "clue": "Riddles solve kare, Pul cross kare... Naam bhi thoda clue jaisa hi hai. Batao Kaun?",
+    "answer": "ripul",
+    "hint": "ripul",
+    "video": "https://drive.google.com/file/d/1x8jbNoT0sI40Ci0r66iD1LGpgUvws5KQ/preview"
+  },
+  {
+    "id": 8,
+    "clue": "Rent share karta hai, Wi-Fi share karta hai, Aur kabhi-kabhi apki patience bhi share kar leta hai. 😄 Kaun?",
+    "answer": "chaitanya",
+    "hint": "chaitanya",
+    "video": "https://drive.google.com/file/d/1OZdHoGRNFAjKMKgV5Z44qIH_F_0_jiQj/preview"
+  },
+  {
+    "id": 9,
+    "clue": "We couldn't get a video message from a very important person, but here's a blast from past. Guess who should have been here but is not here yet",
+    "answer": "sushmita",
+    "hint": "sushmita",
+    "video": "https://drive.google.com/file/d/1fQvat7ZEWzUiq6HHhtbd6gGIIvhoZ2LH/preview"
+  },
+  {
+    "id": 10,
+   "clue": "I MANAGED A VOICE NOTE FROM YOUR CHILDHOOD CRUSH",
     "answer": "rk",
     "hint": "It's effing --- rk ----",
     "video": "https://drive.google.com/file/d/1kyE9y7q9kbEShFbLsg0QWjWLnZZq0pa8/preview"
   }
-  
 ]
