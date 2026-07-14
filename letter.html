@@ -27,7 +27,7 @@
   let wrongAttempts = 0;
   let currentClue = null;
 
-  fetch("clues.json")
+  fetch("clues.json?v=" + Date.now())
     .then(res => res.json())
     .then(clues => {
       currentClue = clues.find(c => c.id === letterId);
