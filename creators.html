@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Your Favorite Creators 🎥</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="screen">
+  <div class="card">
+    <h1>A Little Extra Something 🎥💛</h1>
+    <p>We even got messages from a couple of creators you follow. Yes, really.</p>
+
+    <iframe src="https://drive.google.com/file/d/PUT_FILE_ID_HERE/preview" allow="autoplay" allowfullscreen></iframe>
+    <iframe src="https://drive.google.com/file/d/PUT_FILE_ID_HERE/preview" allow="autoplay" allowfullscreen style="margin-top:20px;"></iframe>
+
+    <br>
+    <span class="back-link" onclick="window.location.href='bonus.html'">← Back to bonus round</span>
+  </div>
+</div>
+
+<script>
+  if (sessionStorage.getItem("unlocked") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  const sparkles = ["🎥","✨","🎈","💫","🌟"];
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (4 + Math.random() * 4) + "s";
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
